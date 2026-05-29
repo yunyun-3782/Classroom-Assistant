@@ -1,0 +1,54 @@
+{
+  "name": "classroom-assistant",
+  "version": "1.0.0",
+  "description": "课堂小助手 - Electron桌面应用",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:win7": "electron-builder --win --config.win.target=nsis"
+  },
+  "keywords": [
+    "electron",
+    "classroom",
+    "assistant",
+    "education"
+  ],
+  "author": "yunyun",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "22.3.27",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.classroom.assistant",
+    "productName": "课堂小助手",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "课堂小助手"
+    }
+  },
+  "dependencies": {
+    "ini": "^7.0.0"
+  }
+}
