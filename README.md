@@ -60,4 +60,5 @@ LastSeconds=300
 
 ## 许可证
 
-MIT
+[CaelLab BY-SA Code License](https://git.caellab.com/yunyun/Classroom-Assistant/src/branch/main/LICENSE)
+ 
