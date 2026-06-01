@@ -7,8 +7,7 @@
     "start": "electron .",
     "build": "electron-builder",
     "build:win": "electron-builder --win",
-    "build:win7": "electron-builder --win --config.win.target=nsis",
-    "build:portable": "electron-builder --win portable --config.win.target=portable"
+    "build:win7": "electron-builder --win --config.win.target=nsis"
   },
   "keywords": [
     "electron",
@@ -47,9 +46,6 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "课堂小助手"
-    },
-    "portable": {
-      "artifactName": "课堂小助手-${version}-便携版.exe"
     }
   },
   "dependencies": {

@@ -11,10 +11,7 @@ if (process.platform === 'win32') {
 
 let mainWindow
 
-const portableDir = process.env.PORTABLE_EXECUTABLE_DIR
-const configDir = portableDir
-  ? path.join(portableDir, 'data')
-  : path.join(app.getPath('appData'), 'classroom-assistant', 'ca')
+const configDir = path.join(app.getPath('appData'), 'classroom-assistant', 'ca')
 const configPath = path.join(configDir, 'memory.ini')
 const settingsPath = path.join(configDir, 'setting.ini')
 const goodRandomPath = path.join(configDir, 'goodrandom.json')
