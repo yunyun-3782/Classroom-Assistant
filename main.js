@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, shell } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const ini = require('ini')
@@ -11,8 +11,13 @@ if (process.platform === 'win32') {
 
 let mainWindow
 
-const configDir = path.join(app.getPath('appData'), 'classroom-assistant', 'ca')
+const portableDir = process.env.PORTABLE_EXECUTABLE_DIR
+const configDir = portableDir
+  ? path.join(portableDir, 'data')
+  : path.join(app.getPath('appData'), 'classroom-assistant', 'ca')
 const configPath = path.join(configDir, 'memory.ini')
+const settingsPath = path.join(configDir, 'setting.ini')
+const goodRandomPath = path.join(configDir, 'goodrandom.json')
 
 const defaultConfig = {
   Random: {
@@ -20,6 +25,17 @@ const defaultConfig = {
   },
   Time: {
     LastSeconds: 300
+  }
+}
+
+const defaultSettings = {
+  Timer: {
+    FillMode: 'last',
+    CustomSeconds: 300
+  },
+  Random: {
+    SkipAnimation: false,
+    SmartMatch: true
   }
 }
 
@@ -38,11 +54,15 @@ function loadConfig() {
   try {
     const content = fs.readFileSync(configPath, 'utf-8')
     const config = ini.parse(content)
-    if (!config.Random || typeof config.Random.MaxNumber !== 'number') {
+    if (!config.Random) {
       config.Random = defaultConfig.Random
+    } else {
+      config.Random.MaxNumber = parseInt(config.Random.MaxNumber) || defaultConfig.Random.MaxNumber
     }
-    if (!config.Time || typeof config.Time.LastSeconds !== 'number') {
+    if (!config.Time) {
       config.Time = defaultConfig.Time
+    } else {
+      config.Time.LastSeconds = parseInt(config.Time.LastSeconds) || defaultConfig.Time.LastSeconds
     }
     saveConfig(config)
     return config
@@ -55,6 +75,88 @@ function loadConfig() {
 function saveConfig(config) {
   ensureConfigDir()
   fs.writeFileSync(configPath, ini.stringify(config), 'utf-8')
+}
+
+function loadSettings() {
+  ensureConfigDir()
+  if (!fs.existsSync(settingsPath)) {
+    saveSettings(defaultSettings)
+    return defaultSettings
+  }
+  try {
+    const content = fs.readFileSync(settingsPath, 'utf-8')
+    const settings = ini.parse(content)
+    if (!settings.Timer) {
+      settings.Timer = defaultSettings.Timer
+    } else {
+      settings.Timer.FillMode = settings.Timer.FillMode || 'last'
+      settings.Timer.CustomSeconds = parseInt(settings.Timer.CustomSeconds) || defaultSettings.Timer.CustomSeconds
+    }
+    if (!settings.Random) {
+      settings.Random = defaultSettings.Random
+    } else {
+      settings.Random.SkipAnimation = settings.Random.SkipAnimation === 'true' || settings.Random.SkipAnimation === true
+      settings.Random.SmartMatch = settings.Random.SmartMatch === 'true' || settings.Random.SmartMatch === true || settings.Random.SmartMatch === undefined
+    }
+    return settings
+  } catch (e) {
+    saveSettings(defaultSettings)
+    return defaultSettings
+  }
+}
+
+function saveSettings(settings) {
+  ensureConfigDir()
+  fs.writeFileSync(settingsPath, ini.stringify(settings), 'utf-8')
+}
+
+function generateWeights(maxNumber) {
+  const weights = {}
+  const base = maxNumber
+  for (let i = 1; i <= maxNumber; i++) {
+    weights[i] = parseFloat(base.toFixed(3))
+  }
+  return weights
+}
+
+function loadGoodRandom() {
+  ensureConfigDir()
+  if (!fs.existsSync(goodRandomPath)) {
+    const config = loadConfig()
+    const maxNumber = config.Random.MaxNumber
+    const data = {
+      maxNumber: maxNumber,
+      weights: generateWeights(maxNumber)
+    }
+    saveGoodRandom(data)
+    return data
+  }
+  try {
+    const content = fs.readFileSync(goodRandomPath, 'utf-8')
+    const data = JSON.parse(content)
+    const config = loadConfig()
+    const currentMax = config.Random.MaxNumber
+    if (data.maxNumber !== currentMax) {
+      data.maxNumber = currentMax
+      data.weights = generateWeights(currentMax)
+      saveGoodRandom(data)
+    }
+    return data
+  } catch (e) {
+    const config = loadConfig()
+    const maxNumber = config.Random.MaxNumber
+    const data = {
+      maxNumber: maxNumber,
+      weights: generateWeights(maxNumber)
+    }
+    saveGoodRandom(data)
+    return data
+  }
+}
+
+function saveGoodRandom(data) {
+  ensureConfigDir()
+  fs.writeFileSync(goodRandomPath, JSON.stringify(data, null, 2), 'utf-8')
 }
 
 function createWindow() {
@@ -180,5 +282,99 @@ ipcMain.handle('set-time-last-seconds', (event, seconds) => {
   const config = loadConfig()
   config.Time.LastSeconds = seconds
   saveConfig(config)
+  return true
+})
+
+ipcMain.handle('get-time-fill-mode', () => {
+  const settings = loadSettings()
+  return settings.Timer.FillMode
+})
+
+ipcMain.handle('set-time-fill-mode', (event, mode) => {
+  const settings = loadSettings()
+  settings.Timer.FillMode = mode
+  saveSettings(settings)
+  return true
+})
+
+ipcMain.handle('get-time-custom-seconds', () => {
+  const settings = loadSettings()
+  return settings.Timer.CustomSeconds
+})
+
+ipcMain.handle('set-time-custom-seconds', (event, seconds) => {
+  const settings = loadSettings()
+  settings.Timer.CustomSeconds = seconds
+  saveSettings(settings)
+  return true
+})
+
+ipcMain.handle('get-random-skip-animation', () => {
+  const settings = loadSettings()
+  return settings.Random.SkipAnimation
+})
+
+ipcMain.handle('set-random-skip-animation', (event, skip) => {
+  const settings = loadSettings()
+  settings.Random.SkipAnimation = skip
+  saveSettings(settings)
+  return true
+})
+
+ipcMain.handle('get-smart-match', () => {
+  const settings = loadSettings()
+  return settings.Random.SmartMatch
+})
+
+ipcMain.handle('set-smart-match', (event, enabled) => {
+  const settings = loadSettings()
+  settings.Random.SmartMatch = enabled
+  saveSettings(settings)
+  return true
+})
+
+ipcMain.handle('pick-weighted-random', () => {
+  const data = loadGoodRandom()
+  const maxNumber = data.maxNumber
+  const fixedWeight = parseFloat((maxNumber * 0.3).toFixed(3))
+  const effectiveWeights = {}
+  let totalWeight = 0
+  for (let i = 1; i <= maxNumber; i++) {
+    effectiveWeights[i] = Math.round(data.weights[i]) ** 2 + fixedWeight
+    totalWeight += effectiveWeights[i]
+  }
+  let rand = Math.random() * totalWeight
+  let picked = 1
+  for (let i = 1; i <= maxNumber; i++) {
+    rand -= effectiveWeights[i]
+    if (rand <= 0) {
+      picked = i
+      break
+    }
+  }
+  for (let i = 1; i <= maxNumber; i++) {
+    if (i === picked) {
+      data.weights[i] = 0.5
+    } else {
+      data.weights[i] = parseFloat(Math.min(data.weights[i] + 1, maxNumber).toFixed(3))
+    }
+  }
+  saveGoodRandom(data)
+  return picked
+})
+
+ipcMain.handle('reset-smart-match-weights', () => {
+  const config = loadConfig()
+  const maxNumber = config.Random.MaxNumber
+  const data = {
+    maxNumber: maxNumber,
+    weights: generateWeights(maxNumber)
+  }
+  saveGoodRandom(data)
+  return true
+})
+
+ipcMain.handle('open-external-url', (event, url) => {
+  shell.openExternal(url)
   return true
 })

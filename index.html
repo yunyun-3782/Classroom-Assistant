@@ -388,6 +388,26 @@
       align-items: center;
       gap: 10px;
       margin: 30px 0;
+      cursor: pointer;
+      padding: 20px;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+
+    .timer-display-container:hover {
+      background: #f8f9fa;
+    }
+
+    .timer-display-container.clickable {
+      cursor: pointer;
+    }
+
+    .timer-display-container.not-clickable {
+      cursor: default;
+    }
+
+    .timer-display-container.not-clickable:hover {
+      background: transparent;
     }
 
     .timer-digit-group {
@@ -721,6 +741,219 @@
       font-weight: 700;
       color: #212529;
     }
+
+    .settings-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .settings-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #212529;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .settings-section {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #e9ecef;
+    }
+
+    .settings-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .settings-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+
+    .settings-item + .settings-item {
+      border-top: 1px solid #e9ecef;
+    }
+
+    .settings-label {
+      font-size: 14px;
+      color: #495057;
+    }
+
+    .settings-hint {
+      display: block;
+      font-size: 12px;
+      color: #adb5bd;
+      margin-top: 2px;
+      font-weight: normal;
+    }
+
+    .settings-radio-group {
+      display: flex;
+      gap: 15px;
+    }
+
+    .settings-radio-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #495057;
+    }
+
+    .settings-radio-item input[type="radio"] {
+      accent-color: #667eea;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .settings-custom-input {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+    }
+
+    .settings-custom-input.visible {
+      display: flex;
+    }
+
+    .settings-custom-input label {
+      font-size: 14px;
+      color: #495057;
+      white-space: nowrap;
+    }
+
+    .settings-input {
+      width: 100px;
+      padding: 8px 12px;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .settings-input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .settings-unit {
+      font-size: 14px;
+      color: #6c757d;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      cursor: pointer;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #dee2e6;
+      border-radius: 26px;
+      transition: all 0.3s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background: #667eea;
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(22px);
+    }
+
+    .about-section {
+      text-align: center;
+    }
+
+    .about-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 15px;
+      gap: 15px;
+    }
+
+    .about-logo {
+      width: 128px;
+      height: 128px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .about-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #343a40;
+      margin: 0;
+    }
+
+    .about-version {
+      font-size: 14px;
+      color: #868e96;
+      margin: 0;
+    }
+
+    .about-link {
+      font-size: 14px;
+      color: #667eea;
+      text-decoration: none;
+      padding: 8px 20px;
+      border: 1px solid #667eea;
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+
+    .about-link:hover {
+      background: #667eea;
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -759,6 +992,10 @@
             <span class="menu-icon">🎲</span>
             <span>随机摇号</span>
           </li>
+          <li class="menu-item" onclick="showPage('settings')">
+            <span class="menu-icon">⚙️</span>
+            <span>设置</span>
+          </li>
         </ul>
       </nav>
 
@@ -777,7 +1014,7 @@
               <button class="timer-tab" onclick="switchTimerMode('stopwatch')">正计时</button>
             </div>
             
-            <div class="timer-display-container">
+            <div class="timer-display-container" onclick="handleTimerDisplayClick()" id="timer-display-area">
               <div class="timer-digit-group">
                 <div class="timer-adj-btns">
                   <button class="timer-adj-btn" onclick="adjustDigit('h-tens', 1)">+</button>
@@ -858,7 +1095,6 @@
             
             <div class="random-controls">
               <button class="random-btn generate" id="random-start-btn" onclick="startRandom()">开始摇号</button>
-              <button class="random-btn stop" id="random-stop-btn" onclick="stopRandom()" style="display:none;">停止</button>
             </div>
 
             <div class="random-settings">
@@ -873,9 +1109,69 @@
             </div>
           </div>
         </div>
+
+        <div id="page-settings" class="page">
+          <div class="settings-container">
+            <h2 class="settings-title">设置</h2>
+            
+            <div class="settings-section">
+              <div class="settings-section-title">⏱️ 高效计时</div>
+              <div class="settings-item">
+                <span class="settings-label">默认填充的时间</span>
+                <div class="settings-radio-group">
+                  <label class="settings-radio-item">
+                    <input type="radio" name="timer-fill-mode" value="last" checked onchange="handleFillModeChange(this.value)">
+                    来自上次设定
+                  </label>
+                  <label class="settings-radio-item">
+                    <input type="radio" name="timer-fill-mode" value="custom" onchange="handleFillModeChange(this.value)">
+                    自定义
+                  </label>
+                </div>
+              </div>
+              <div class="settings-custom-input" id="custom-seconds-container">
+                <label>自定义倒计时默认填充时间</label>
+                <input type="number" class="settings-input" id="custom-seconds-input" min="1" max="86400" value="300" oninput="handleCustomSecondsChange(this.value)">
+                <span class="settings-unit">秒</span>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="settings-section-title">🎲 随机摇号</div>
+              <div class="settings-item">
+                <span class="settings-label">跳过动画</span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="skip-animation-toggle" onchange="handleSkipAnimationChange(this.checked)">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="settings-item">
+                <span class="settings-label">智能匹配
+                  <span class="settings-hint">避免重复抽中同一号码</span>
+                </span>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="smart-match-toggle" onchange="handleSmartMatchChange(this.checked)">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-section about-section">
+              <div class="settings-section-title">关于</div>
+              <div class="about-content">
+                <img src="assets/icon.ico" alt="Logo" class="about-logo">
+                <div class="about-info">
+                  <h3 class="about-name">课堂小助手 Classroom Assistant</h3>
+                  <p class="about-version" id="about-version"></p>
+                  <a href="#" class="about-link" onclick="openSourceCode(event)">源代码</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         
         <div class="version-info">
-          <p id="version-info">课堂小助手 v1.0.0 | 支持Windows 7及以上系统</p>
+          <p id="version-info">课堂小助手 Copyrights 2026 Yunyun By CaelLab</p>
         </div>
       </main>
     </div>
@@ -919,6 +1215,7 @@
     function updateTimerButtonsVisibility() {
       const btns = document.querySelectorAll('.timer-adj-btn')
       const digitBtns = document.querySelectorAll('.timer-digit-btn')
+      const displayArea = document.getElementById('timer-display-area')
       const isActive = isTimerRunning || isTimerPaused
       const hideAdj = isActive || timerMode === 'stopwatch'
       btns.forEach(b => b.style.visibility = hideAdj ? 'hidden' : 'visible')
@@ -938,6 +1235,15 @@
         t.style.opacity = isActive ? '0.5' : '1'
         t.style.pointerEvents = isActive ? 'none' : 'auto'
       })
+      if (displayArea) {
+        if (isActive) {
+          displayArea.classList.remove('not-clickable')
+          displayArea.classList.add('clickable')
+        } else {
+          displayArea.classList.remove('clickable')
+          displayArea.classList.add('not-clickable')
+        }
+      }
     }
 
     function adjustDigit(id, delta) {
@@ -990,8 +1296,18 @@
 
     async function loadTimeLastSeconds() {
       if (window.electronAPI) {
-        const seconds = await window.electronAPI.getTimeLastSeconds()
-        setTimerDigits(seconds)
+        try {
+          const fillMode = await window.electronAPI.getTimeFillMode()
+          let seconds
+          if (fillMode === 'custom') {
+            seconds = await window.electronAPI.getTimeCustomSeconds()
+          } else {
+            seconds = await window.electronAPI.getTimeLastSeconds()
+          }
+          setTimerDigits(seconds)
+        } catch (error) {
+          console.log('加载计时器记忆失败:', error)
+        }
       }
     }
 
@@ -1065,6 +1381,13 @@
       updateTimerButtonsVisibility()
     }
 
+    function handleTimerDisplayClick() {
+      const isActive = isTimerRunning || isTimerPaused
+      if (isActive) {
+        openFullscreen()
+      }
+    }
+
     let fullscreenInterval = null
     let wasMaximizedBeforeFullscreen = false
 
@@ -1104,9 +1427,11 @@
       document.getElementById('fs-s').textContent = s
     }
 
-    let randomInterval = null
     let isRandomRunning = false
     let randomMax = 75
+    let randomTimeout = null
+    let skipAnimation = false
+    let smartMatch = true
 
     async function loadRandomMax() {
       if (window.electronAPI) {
@@ -1117,30 +1442,53 @@
     }
 
     async function adjustRandomMax(delta) {
+      if (isRandomRunning) return
       randomMax = Math.max(1, randomMax + delta)
       document.getElementById('random-max-display').textContent = randomMax
       if (window.electronAPI) {
         await window.electronAPI.setRandomMaxNumber(randomMax)
+        await window.electronAPI.resetSmartMatchWeights()
       }
     }
 
-    function startRandom() {
+    async function startRandom() {
       if (isRandomRunning) return
       isRandomRunning = true
-      document.getElementById('random-start-btn').style.display = 'none'
-      document.getElementById('random-stop-btn').style.display = 'inline-block'
-      
-      randomInterval = setInterval(() => {
-        const num = Math.floor(Math.random() * randomMax) + 1
-        document.getElementById('random-display').textContent = num
-      }, 50)
+      document.getElementById('random-start-btn').disabled = true
+      document.getElementById('random-start-btn').style.opacity = '0.5'
+      document.getElementById('random-display').style.color = '#667eea'
+      let finalNum
+      if (smartMatch && window.electronAPI) {
+        finalNum = await window.electronAPI.pickWeightedRandom()
+      } else {
+        finalNum = Math.floor(Math.random() * randomMax) + 1
+      }
+      if (skipAnimation) {
+        document.getElementById('random-display').textContent = finalNum
+        isRandomRunning = false
+        document.getElementById('random-start-btn').disabled = false
+        document.getElementById('random-start-btn').style.opacity = '1'
+      } else {
+        rollRandom(25, 0, finalNum)
+      }
     }
 
-    function stopRandom() {
-      isRandomRunning = false
-      clearInterval(randomInterval)
-      document.getElementById('random-start-btn').style.display = 'inline-block'
-      document.getElementById('random-stop-btn').style.display = 'none'
+    function rollRandom(delay, count, finalNum) {
+      const num = Math.floor(Math.random() * randomMax) + 1
+      document.getElementById('random-display').textContent = num
+      
+      const maxRolls = 15 + Math.floor(Math.random() * 8)
+      const newDelay = count > maxRolls * 0.5 ? delay * 1.12 : delay
+      
+      if (newDelay < 350) {
+        randomTimeout = setTimeout(() => rollRandom(newDelay, count + 1, finalNum), newDelay)
+      } else {
+        document.getElementById('random-display').textContent = finalNum
+        isRandomRunning = false
+        document.getElementById('random-start-btn').disabled = false
+        document.getElementById('random-start-btn').style.opacity = '1'
+        document.getElementById('random-display').style.color = '#667eea'
+      }
     }
 
     async function loadAppInfo() {
@@ -1149,17 +1497,88 @@
           const version = await window.electronAPI.getAppVersion()
           const appName = await window.electronAPI.getAppName()
           document.getElementById('version-info').textContent = 
-            appName + ' v' + version + ' | 支持Windows 7及以上系统'
+            appName + ' v' + version + ' | Copyrights 2026 Yunyun By CaelLab'
+          document.getElementById('about-version').textContent = 'v' + version
         }
       } catch (error) {
         console.log('无法获取应用信息:', error)
       }
     }
-    
-    document.addEventListener('DOMContentLoaded', () => {
+
+    function handleFillModeChange(mode) {
+      const container = document.getElementById('custom-seconds-container')
+      if (mode === 'custom') {
+        container.classList.add('visible')
+      } else {
+        container.classList.remove('visible')
+      }
+      if (window.electronAPI) {
+        window.electronAPI.setTimeFillMode(mode)
+      }
+    }
+
+    let customSecondsDebounce = null
+    function handleCustomSecondsChange(value) {
+      clearTimeout(customSecondsDebounce)
+      customSecondsDebounce = setTimeout(() => {
+        const seconds = Math.max(1, Math.min(86400, parseInt(value) || 300))
+        if (window.electronAPI) {
+          window.electronAPI.setTimeCustomSeconds(seconds)
+        }
+      }, 500)
+    }
+
+    function handleSkipAnimationChange(checked) {
+      skipAnimation = checked
+      if (window.electronAPI) {
+        window.electronAPI.setRandomSkipAnimation(checked)
+      }
+    }
+
+    function handleSmartMatchChange(checked) {
+      smartMatch = checked
+      if (window.electronAPI) {
+        window.electronAPI.setSmartMatch(checked)
+        if (checked) {
+          window.electronAPI.resetSmartMatchWeights()
+        }
+      }
+    }
+
+    async function loadSettings() {
+      if (window.electronAPI) {
+        const fillMode = await window.electronAPI.getTimeFillMode()
+        const radios = document.querySelectorAll('input[name="timer-fill-mode"]')
+        radios.forEach(radio => {
+          radio.checked = radio.value === fillMode
+        })
+        if (fillMode === 'custom') {
+          document.getElementById('custom-seconds-container').classList.add('visible')
+        }
+
+        const customSeconds = await window.electronAPI.getTimeCustomSeconds()
+        document.getElementById('custom-seconds-input').value = customSeconds
+
+        skipAnimation = await window.electronAPI.getRandomSkipAnimation()
+        document.getElementById('skip-animation-toggle').checked = skipAnimation
+
+        smartMatch = await window.electronAPI.getSmartMatch()
+        document.getElementById('smart-match-toggle').checked = smartMatch
+      }
+    }
+
+    function openSourceCode(e) {
+      e.preventDefault()
+      if (window.electronAPI) {
+        window.electronAPI.openExternalUrl('https://git.caellab.com/yunyun/Classroom-Assistant')
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
       loadAppInfo()
       loadRandomMax()
-      loadTimeLastSeconds()
+      await loadTimeLastSeconds()
+      loadSettings()
     })
   </script>
 </body>
