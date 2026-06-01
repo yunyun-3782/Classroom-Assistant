@@ -1,6 +1,6 @@
 {
   "name": "classroom-assistant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "课堂小助手 - Electron桌面应用",
   "main": "main.js",
   "scripts": {

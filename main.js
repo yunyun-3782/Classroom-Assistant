@@ -190,7 +190,7 @@ function showAbout() {
   dialog.showMessageBox(mainWindow, {
     type: 'info',
     title: '关于课堂小助手',
-    message: '课堂小助手 v1.0.0',
+    message: '课堂小助手 v1.0.1',
     detail: '一款专为课堂教学设计的辅助工具\n支持Windows 7及以上系统'
   })
 }
