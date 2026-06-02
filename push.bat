@@ -2,7 +2,9 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
-cd /d "C:\Users\yunyun\Desktop\111\ClassroomAssistant"
+:: 获取当前 bat 文件所在目录
+set "SCRIPT_DIR=%~dp0"
+cd /d "%SCRIPT_DIR%"
 
 echo =================================================
 echo 当前目录: %cd%
@@ -71,9 +73,25 @@ if "!commitBody!"=="" (
     git commit -m "!commitTitle!" -m "!commitBody!"
 )
 
+:: 检查提交是否成功
+if %errorlevel% neq 0 (
+    echo.
+    echo 提交失败，没有需要提交的更改。
+    pause
+    exit /b
+)
+
 echo.
 echo [5/5] 推送到远程服务器...
 git push
+
+:: 检查推送是否成功
+if %errorlevel% neq 0 (
+    echo.
+    echo 推送失败，请检查网络连接或远程仓库状态。
+    pause
+    exit /b
+)
 
 echo.
 echo 完成！
