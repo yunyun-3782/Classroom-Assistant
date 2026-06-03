@@ -940,6 +940,17 @@
       margin: 0;
     }
 
+    .about-developer {
+      font-size: 14px;
+      color: #667eea;
+      margin: 4px 0 0 0;
+      font-weight: 500;
+    }
+
+    .about-developer strong {
+      color: #5a6fd6;
+    }
+
     .about-link {
       font-size: 14px;
       color: #667eea;
@@ -953,6 +964,74 @@
     .about-link:hover {
       background: #667eea;
       color: white;
+    }
+
+    .license-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .license-modal-overlay.active {
+      display: flex;
+    }
+
+    .license-modal {
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .license-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    .license-modal-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .license-modal-close {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      font-size: 18px;
+      color: #666;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .license-modal-close:hover {
+      background: #e9ecef;
+    }
+
+    .license-modal-body {
+      padding: 20px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #333;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -1163,7 +1242,10 @@
                 <div class="about-info">
                   <h3 class="about-name">课堂小助手 Classroom Assistant</h3>
                   <p class="about-version" id="about-version"></p>
-                  <a href="#" class="about-link" onclick="openSourceCode(event)">源代码</a>
+                  <p class="about-developer">由 <strong>Yunyun（云云）</strong> 开发</p>
+                  <a href="https://www.caellab.com/2026/ca/" target="_blank" class="about-link" onclick="openSourceCode(event)">介绍页</a>
+                  <a href="https://github.com/yunyun-3782/Classroom-Assistant" target="_blank" class="about-link" onclick="openSourceCode(event)">开源仓库</a>
+                  <a href="#" class="about-link" onclick="openLicenseModal(event)">查看许可证</a>
                 </div>
               </div>
             </div>
@@ -1174,6 +1256,37 @@
           <p id="version-info">课堂小助手 Copyrights 2026 Yunyun By CaelLab</p>
         </div>
       </main>
+    </div>
+  </div>
+
+  <div class="license-modal-overlay" id="license-modal-overlay">
+    <div class="license-modal">
+      <div class="license-modal-header">
+        <h3>许可证</h3>
+        <button class="license-modal-close" onclick="closeLicenseModal()">&times;</button>
+      </div>
+      <div class="license-modal-body">CaelLab BY-SA Code License 
+
+Copyright (c) 2026 Yunyun(云云) By 虚舟实验室(CaelLab) 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this work (the "Work"), to use, copy, modify, merge, publish, distribute, 
+sublicense, and sell copies of the Work, for personal, commercial, or 
+non-commercial purposes, subject to the following conditions: 
+
+1. Source Availability: If you distribute the Work, or any derivative work 
+   based on the Work, you must make the complete corresponding source code 
+   available under the terms of this same license. 
+
+2. License Preservation: The above copyright notice and this permission notice 
+   shall be included in all copies or substantial portions of the Work. 
+
+3. ShareAlike: Any distributed derivative work must be licensed under the 
+   CaelLab BY-SA Code License. 
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</div>
     </div>
   </div>
 
@@ -1572,6 +1685,15 @@
       if (window.electronAPI) {
         window.electronAPI.openExternalUrl('https://git.caellab.com/yunyun/Classroom-Assistant')
       }
+    }
+
+    function openLicenseModal(e) {
+      e.preventDefault()
+      document.getElementById('license-modal-overlay').classList.add('active')
+    }
+
+    function closeLicenseModal() {
+      document.getElementById('license-modal-overlay').classList.remove('active')
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
