@@ -39,17 +39,6 @@ npm run build:win
 
 构建完成后，安装包位于 `dist` 目录。
 
-## 配置文件
-
-配置文件位置：`%APPDATA%\classroom-assistant\ca\memory.ini`
-
-```ini
-[Random]
-MaxNumber=75
-
-[Time]
-LastSeconds=300
-```
 
 ## 界面操作
 
